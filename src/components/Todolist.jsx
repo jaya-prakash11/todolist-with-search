@@ -3,14 +3,14 @@ import '../style.css';
 
 export default function Todolist() {
   const [task, setTask] = useState('');
-  const [todoArray, settoDoArray] = useState(['aaaaa', 'bbbbb', 'ccccc']);
+  const [todoArray, settoDoArray] = useState([]);
   const [searchArray, setSearchArray] = useState([]);
   const TextRef = useRef(null);
   let timeOutId = 0;
 
   const addTask = () => {
     settoDoArray([...todoArray, TextRef.current.value]);
-    TextRef.current.value = '';
+    setTask('');
   };
 
   const editTask = (Todoindex) => {
@@ -67,35 +67,41 @@ export default function Todolist() {
       }}
     >
       <h1>Todo list</h1>
-      <h3>Search</h3>
+      <h2>Search Task</h2>
       <input onChange={(e) => onSearch(e.target.value)}></input>
       {searchArray.map((res, index) => {
         return <div>{res}</div>;
       })}
       =======================================
+      <h2>Add task</h2>
       <input
         value={task}
         onChange={(e) => setTask(e.target.value)}
         ref={TextRef}
       ></input>
-      <button onClick={addTask}>Add</button>
-      {todoArray.map((res, index) => (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '32px',
-            marginTop: '20px',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '32px' }}>
-            {res}
-
-            <button onClick={() => editTask(index)}> edit</button>
-            <button onClick={() => deleteTask(index)}>delete</button>
-          </div>
-        </div>
-      ))}
+      <button onClick={addTask} disabled={task == ''}>
+        Add
+      </button>
+      <table>
+        <tr>
+          <th>Task</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        {todoArray.map((res, index) => (
+          <tr>
+            <td>{res}</td>
+            <td>
+              {' '}
+              <button onClick={() => editTask(index)}> edit</button>
+            </td>
+            <td>
+              {' '}
+              <button onClick={() => deleteTask(index)}>delete</button>
+            </td>
+          </tr>
+        ))}
+      </table>
     </div>
   );
 }
